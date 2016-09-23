@@ -41,17 +41,15 @@ namespace VAEXTRASETTINGS\Modules {
 			$options = $this->get_options();
 			$options = isset( $options['rest_api'] ) ? intval( $options['rest_api'] ) : 0;
 
-			if ( 1 !== $options || is_admin() ) {
-				return;
+			if ( 1 === $options && ! is_admin() ) {
+				remove_action( 'wp_head', 'wp_oembed_add_host_js' );
+				remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
+				remove_action( 'wp_head', 'rest_output_link_wp_head' );
+				remove_action( 'xmlrpc_rsd_apis', 'rest_output_rsd' );
+				remove_action( 'template_redirect', 'rest_output_link_header', 11 );
+				add_filter( 'rest_enabled', '__return_false' );
+				add_action( 'rest_api_init', [ &$this, 'rest_api_init' ], -1 );
 			}
-
-			remove_action( 'wp_head', 'wp_oembed_add_host_js' );
-			remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
-			remove_action( 'wp_head', 'rest_output_link_wp_head' );
-			remove_action( 'xmlrpc_rsd_apis', 'rest_output_rsd' );
-			remove_action( 'template_redirect', 'rest_output_link_header', 11 );
-			add_filter( 'rest_enabled', '__return_false' );
-			add_action( 'rest_api_init', [ &$this, 'rest_api_init' ], - 1 );
 		}
 
 		/**

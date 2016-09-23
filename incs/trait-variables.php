@@ -85,7 +85,7 @@ namespace VAEXTRASETTINGS\Modules {
 				}
 			}
 
-			return $options;
+			return apply_filters( 'va_extra_settings_get_options', $options );
 		}
 	}
 }

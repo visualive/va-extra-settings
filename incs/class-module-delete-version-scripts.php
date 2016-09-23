@@ -41,12 +41,10 @@ namespace VAEXTRASETTINGS\Modules {
 			$options = $this->get_options();
 			$options = isset( $options['delete_version'] ) ? intval( $options['delete_version'] ) : 0;
 
-			if ( 1 !== $options || is_admin() ) {
-				return;
+			if ( 1 === $options && ! is_admin() ) {
+				add_filter( 'script_loader_src', [ &$this, 'delete_src_version' ], 99 );
+				add_filter( 'style_loader_src', [ &$this, 'delete_src_version' ], 99 );
 			}
-
-			add_filter( 'script_loader_src', [ &$this, 'delete_src_version' ], 99 );
-			add_filter( 'style_loader_src', [ &$this, 'delete_src_version' ], 99 );
 		}
 
 		/**

@@ -41,11 +41,9 @@ namespace VAEXTRASETTINGS\Modules {
 			$options = $this->get_options();
 			$options = isset( $options['js_in_footer'] ) ? intval( $options['js_in_footer'] ) : 0;
 
-			if ( 1 !== $options || is_admin() ) {
-				return;
+			if ( 1 === $options && ! is_admin() ) {
+				add_action( 'wp_enqueue_scripts', array( &$this, 'wp_enqueue_scripts' ), -1 );
 			}
-
-			add_action( 'wp_enqueue_scripts', array( &$this, 'wp_enqueue_scripts' ), - 1 );
 		}
 
 		/**
