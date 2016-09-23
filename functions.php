@@ -2,7 +2,7 @@
 /**
  * Plugin Name: VA Extra Settings
  * Plugin URI: https://github.com/visualive/va-extra-settings
- * Description: .
+ * Description: Add extra settings to the WordPress.
  * Author: KUCKLU
  * Version: 1.0.0
  * WordPress Version: 4.6.1
