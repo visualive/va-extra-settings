@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: VA Extra Settings
- * Plugin URI: https://github.com/visualive/va-tools
+ * Plugin URI: https://github.com/visualive/va-extra-settings
  * Description: .
  * Author: KUCKLU
  * Version: 1.0.0
@@ -15,7 +15,7 @@
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  *
  * @package    WordPress
- * @subpackage VA Tools
+ * @subpackage VA Extra Settings
  * @author     KUCKLU <kuck1u@visualive.jp>
  *             Copyright (C) 2016 KUCKLU & VisuAlive.
  *             This program is free software; you can redistribute it and/or modify
@@ -63,18 +63,6 @@ define( 'VAEXTRASETTINGS_PREFIX_OPTION', VAEXTRASETTINGS_PREFIX . 'option_' );
 
 unset( $vaextrasettings_data );
 
-/**
- * Plugin only works in WordPress 4.6 or later and PHP 5.6 or later.
- */
-if ( version_compare( $GLOBALS['wp_version'], VAEXTRASETTINGS_VERSION_WP, '<' ) || version_compare( PHP_VERSION, VAEXTRASETTINGS_VERSION_PHP, '<' ) ) {
-	add_action( 'admin_notices', function () {
-		$message = sprintf( __( '%s requires at least WordPress version %s and PHP version %s. You are running WordPress version %s and PHP version %s. Please upgrade and try again.', 'va-extra-settings' ), VAEXTRASETTINGS_NAME, VAEXTRASETTINGS_VERSION_WP, VAEXTRASETTINGS_VERSION_PHP, $GLOBALS['wp_version'], PHP_VERSION );
-		printf( '<div class="error"><p>%s</p></div>', esc_html( $message ) );
-	} );
-
-	return;
-}
-
 require_once dirname( __FILE__ ) . '/incs/trait-instance.php';
 require_once dirname( __FILE__ ) . '/incs/trait-variables.php';
 require_once dirname( __FILE__ ) . '/incs/class-module-admin.php';
@@ -88,7 +76,19 @@ require_once dirname( __FILE__ ) . '/incs/class-module-installer.php';
  * Run plugin.
  */
 add_action( 'plugins_loaded', function () {
-	load_plugin_textdomain( 'va-extra-settings', false, VAEXTRASETTINGS_PATH . '/langs' );
+	load_plugin_textdomain( 'va-extra-settings', false, dirname( plugin_basename( __FILE__ ) ) . '/langs' );
+
+	/**
+	 * Plugin only works in WordPress 4.6 or later and PHP 5.6 or later.
+	 */
+	if ( version_compare( $GLOBALS['wp_version'], VAEXTRASETTINGS_VERSION_WP, '<' ) || version_compare( PHP_VERSION, VAEXTRASETTINGS_VERSION_PHP, '<' ) ) {
+		add_action( 'admin_notices', function () {
+			$message = sprintf( __( '%s requires at least WordPress version %s and PHP version %s. You are running WordPress version %s and PHP version %s. Please upgrade and try again.', 'va-extra-settings' ), VAEXTRASETTINGS_NAME, VAEXTRASETTINGS_VERSION_WP, VAEXTRASETTINGS_VERSION_PHP, $GLOBALS['wp_version'], PHP_VERSION );
+			printf( '<div class="error"><p>%s</p></div>', esc_html( $message ) );
+		} );
+
+		return;
+	}
 
 	if ( is_admin() ) {
 		$admin = apply_filters( 'va_extra_settings_module_admin', \VAEXTRASETTINGS\Modules\Admin::class );

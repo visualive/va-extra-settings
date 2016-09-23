@@ -48,7 +48,7 @@ namespace VAEXTRASETTINGS\Modules {
 			$this->settings = $this->get_setting_labels();
 
 			add_action( 'admin_init', [ &$this, 'admin_init' ] );
-			add_action( 'admin_menu', [ &$this, 'admin_menu' ] );
+			add_action( 'admin_menu', [ &$this, 'admin_menu' ], -10 );
 		}
 
 		/**
